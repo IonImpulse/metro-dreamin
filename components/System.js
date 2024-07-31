@@ -439,6 +439,32 @@ export function System({ownerDocData = {},
     }
   }
 
+  // Handles keydown events
+  // Currently in use for:
+  // - ctrl + s to save
+  // - ctrl + z to undo
+  const handleKeyDown = (e) => {
+    // First, if it's ctrl + s call handleSave
+    if (e.ctrlKey && e.key === 's') {
+      e.preventDefault();
+      handleSave();
+      return;
+    }
+
+    // If it's ctrl + z, call handleUndo
+    if (e.ctrlKey && e.key === 'z') {
+      e.preventDefault();
+      handleUndo();
+      return;
+    }
+  }
+
+  // Register a listener for keydown events
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const renderActions = () => {
     return (
       <div className="System-actions">
